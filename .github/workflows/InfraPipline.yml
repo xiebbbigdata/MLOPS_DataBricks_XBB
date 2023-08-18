@@ -9,7 +9,7 @@ on:
       RESOURCE_GROUP:
         description: 'Resource Group Name'
         required: true
-        default: 'Databricks-MyProject'
+        default: 'MLOPS_DataBricks_XBB'
 
       # The Azure region to which to deploy your resources
       LOCATION:
@@ -21,19 +21,19 @@ on:
       WORKSPACE_NAME:
         description: 'Databricks workspace name'
         required: true
-        default: 'Databricks-MyProject'
+        default: 'MLOPS_DBK_XBB'
 
       # This is a KeyVault for holding the Service Principal to make Databricks API calls and to hold Databricks KeyVault backed Secrets
       KEY_VAULT_NAME:
         description: 'KeyVault name'
         required: true
-        default: 'KeyVault-MyProject'
+        default: 'KeyVault_DBK_XBB'
 
       # This is a KeyVault for holding the Service Principal to make Databricks API calls and to hold Databricks KeyVault backed Secrets
       SUBSCRIPTION_ID:
         description: 'Azure Subscription Id'
         required: true
-        default: '00000000-0000-0000-0000-000000000000'
+        default: 'a98e8d0a-4b26-4e05-b4fe-4fa28944338c'
 
       # Inialize the system
       # Note: We only want to run the KeyVault ARM template once.  If you keep re-running, then you will OVERWRITE your values
@@ -66,12 +66,12 @@ jobs:
         azPSVersion: '3.1.0'
 
     # Publish Artifact: ARM-Templates
-    - name: 'Publish Artifact: ARM-Templates' 
+    - name: 'Publish Artifact: ARM-Templates'
       uses: actions/upload-artifact@v2
       with:
         name: 'ARM-Templates'
         path: '${{ github.workspace }}/ARM-Templates'
-                      
+
 
 #############################################################
 # Deploy to Dev
@@ -91,23 +91,23 @@ jobs:
       with:
         inlineScript: |
           dir env:
-        azPSVersion: '3.1.0'        
+        azPSVersion: '3.1.0'
 
     # Download Artifact: ARM-Templates
-    - name: 'Download Artifact: ARM-Templates' 
+    - name: 'Download Artifact: ARM-Templates'
       uses: actions/download-artifact@v2
       with:
         name: 'ARM-Templates'
         path: ${{ github.workspace }}/ARM-Templates
 
-        
+
     # Login to Azure
     - name: Login via Az module
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         # set this if you will be using PowerShell
-        # enable-AzPSSession: true 
+        # enable-AzPSSession: true
 
     # Deploy Databricks Workspace
     - name: Deploy ARM Template (Databricks)
@@ -152,22 +152,22 @@ jobs:
       with:
         inlineScript: |
           dir env:
-        azPSVersion: '3.1.0'        
+        azPSVersion: '3.1.0'
 
     # Download Artifact: ARM-Templates
-    - name: 'Download Artifact: ARM-Templates' 
+    - name: 'Download Artifact: ARM-Templates'
       uses: actions/download-artifact@v2
       with:
         name: 'ARM-Templates'
         path: ${{ github.workspace }}/ARM-Templates
-        
+
     # Login to Azure
     - name: Login via Az module
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         # set this if you will be using PowerShell
-        # enable-AzPSSession: true 
+        # enable-AzPSSession: true
 
     # Deploy Databricks Workspace
     - name: Deploy ARM Template (Databricks)
@@ -177,7 +177,7 @@ jobs:
         inlineScript: |
           az group create --location "${{ github.event.inputs.LOCATION }}" --name "${{ env.resourceGroupName }}"
           az deployment group create --resource-group ${{ env.resourceGroupName }} --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName="${{ env.databricksWorkspaceName }}"
-    
+
     # Deploy Azure KeyVault
     - name: Deploy ARM Template (KeyVault)
       uses: azure/CLI@v1
@@ -186,7 +186,7 @@ jobs:
         inlineScript: |
           az group create --location "${{ github.event.inputs.LOCATION }}" --name "${{ env.resourceGroupName }}"
           az deployment group create --resource-group ${{ env.resourceGroupName }} --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.keyvault.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.keyvault.json --parameters keyVaultName="${{ env.keyVaultName }}"
-    
+
     # Download KeyVault Secrets
     - name: Download KeyVault Secrets
       uses: Azure/get-keyvault-secrets@v1.0
@@ -214,23 +214,23 @@ jobs:
       with:
         inlineScript: |
           dir env:
-        azPSVersion: '3.1.0'        
+        azPSVersion: '3.1.0'
 
     # Download Artifact: ARM-Templates
-    - name: 'Download Artifact: ARM-Templates' 
+    - name: 'Download Artifact: ARM-Templates'
       uses: actions/download-artifact@v2
       with:
         name: 'ARM-Templates'
         path: ${{ github.workspace }}/ARM-Templates
 
-        
+
   # Login to Azure
     - name: Login via Az module
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         # set this if you will be using PowerShell
-        # enable-AzPSSession: true 
+        # enable-AzPSSession: true
 
   # Deploy Databricks Workspace
     - name: Deploy ARM Template (Databricks)
@@ -240,7 +240,7 @@ jobs:
         inlineScript: |
           az group create --location "${{ github.event.inputs.LOCATION }}" --name "${{ env.resourceGroupName }}"
           az deployment group create --resource-group ${{ env.resourceGroupName }} --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName="${{ env.databricksWorkspaceName }}"
-   
+
    # Deploy Azure KeyVault
     - name: Deploy ARM Template (KeyVault)
       uses: azure/CLI@v1
@@ -249,7 +249,7 @@ jobs:
         inlineScript: |
           az group create --location "${{ github.event.inputs.LOCATION }}" --name "${{ env.resourceGroupName }}"
           az deployment group create --resource-group ${{ env.resourceGroupName }} --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.keyvault.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.keyvault.json --parameters keyVaultName="${{ env.keyVaultName }}"
-           
+
      # Download KeyVault Secrets
     - name: Download KeyVault Secrets
       uses: Azure/get-keyvault-secrets@v1.0
