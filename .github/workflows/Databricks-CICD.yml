@@ -27,7 +27,7 @@ on:
       RESOURCE_GROUP:
         description: 'Resource Group Name'
         required: true
-        default: 'Databricks-MyProject-MG'
+        default: 'MLOPS_DBK_XBB'
 
       # The Azure region to which to deploy your resources
       LOCATION:
@@ -39,7 +39,7 @@ on:
       WORKSPACE_NAME:
         description: 'Databricks workspace name'
         required: true
-        default: 'Databricks-MyProject-MG'
+        default: 'MLOPS_DBK_XBB'
 
       # This is a KeyVault for holding the Service Principal to make Databricks API calls and to hold Databricks KeyVault backed Secrets
       KEY_VAULT_NAME:
@@ -83,46 +83,46 @@ jobs:
         azPSVersion: '3.1.0'
 
     # Publish Artifact: ARM-Templates
-    - name: 'Publish Artifact: ARM-Templates' 
+    - name: 'Publish Artifact: ARM-Templates'
       uses: actions/upload-artifact@v2
       with:
         name: 'ARM-Templates'
         path: '${{ github.workspace }}/ARM-Templates'
 
     # Publish Artifact: Databricks-Clusters
-    - name: 'Publish Artifact: Databricks-Clusters' 
+    - name: 'Publish Artifact: Databricks-Clusters'
       uses: actions/upload-artifact@v2
       with:
         name: 'clusters'
         path: '${{ github.workspace }}/clusters'
 
     # Publish Artifact: Databricks-Notebooks
-    - name: 'Publish Artifact: Databricks-Notebooks' 
+    - name: 'Publish Artifact: Databricks-Notebooks'
       uses: actions/upload-artifact@v2
       with:
         name: 'notebooks'
         path: '${{ github.workspace }}/notebooks'
 
     # Publish Artifact: Databricks-Jobs
-    - name: 'Publish Artifact: Databricks-Jobs' 
+    - name: 'Publish Artifact: Databricks-Jobs'
       uses: actions/upload-artifact@v2
       with:
         name: 'jobs'
         path: '${{ github.workspace }}/jobs'
 
     # Publish Artifact: Databricks-Init-Scripts
-    - name: 'Publish Artifact: Databricks-Init-Scripts' 
+    - name: 'Publish Artifact: Databricks-Init-Scripts'
       uses: actions/upload-artifact@v2
       with:
         name: 'init-scripts'
         path: '${{ github.workspace }}/init-scripts'
 
     # Publish Artifact: Databricks-Deployment-Scripts
-    - name: 'Publish Artifact: Databricks-Deployment-Scripts' 
+    - name: 'Publish Artifact: Databricks-Deployment-Scripts'
       uses: actions/upload-artifact@v2
       with:
         name: 'deployment-scripts'
-        path: '${{ github.workspace }}/deployment-scripts'                                
+        path: '${{ github.workspace }}/deployment-scripts'
 
 
 #############################################################
@@ -132,8 +132,8 @@ jobs:
     needs: Build
     runs-on: ubuntu-latest
     env:
-      resourceGroupName: 'Databricks-MyProject-MG-Dev'
-      databricksWorkspaceName: 'Databricks-MyProject-MG-Dev'
+      resourceGroupName: 'MLOPS_DBK_XBB-Dev'
+      databricksWorkspaceName: 'MLOPS_DBK_XBB-Dev'
       keyVaultName: 'KeyVault-MyProject7-Dev'
       NotebookDeploymentPath: '/MyProject'
       GitNotebookPath: 'notebooks/MyProject'
@@ -145,57 +145,57 @@ jobs:
       with:
         inlineScript: |
           dir env:
-        azPSVersion: '3.1.0'        
+        azPSVersion: '3.1.0'
 
     # Download Artifact: ARM-Templates
-    - name: 'Download Artifact: ARM-Templates' 
+    - name: 'Download Artifact: ARM-Templates'
       uses: actions/download-artifact@v2
       with:
         name: 'ARM-Templates'
         path: ${{ github.workspace }}/ARM-Templates
 
     # Download Artifact: Databricks-Clusters
-    - name: 'Download Artifact: Databricks-Clusters' 
+    - name: 'Download Artifact: Databricks-Clusters'
       uses: actions/download-artifact@v2
       with:
         name: 'clusters'
         path: ${{ github.workspace }}/clusters
 
     # Download Artifact: Databricks-Notebooks
-    - name: 'Download Artifact: Databricks-Notebooks' 
+    - name: 'Download Artifact: Databricks-Notebooks'
       uses: actions/download-artifact@v2
       with:
         name: 'notebooks'
         path: ${{ github.workspace }}/notebooks
 
     # Download Artifact: Databricks-Jobs
-    - name: 'Download Artifact: Databricks-Jobs' 
+    - name: 'Download Artifact: Databricks-Jobs'
       uses: actions/download-artifact@v2
       with:
         name: 'jobs'
         path: ${{ github.workspace }}/jobs
 
     # Download Artifact: Databricks-Init-Scripts
-    - name: 'Download Artifact: Databricks-Init-Scripts' 
+    - name: 'Download Artifact: Databricks-Init-Scripts'
       uses: actions/download-artifact@v2
       with:
         name: 'init-scripts'
         path: ${{ github.workspace }}/init-scripts
 
     # Download Artifact: Deployment Scripts
-    - name: 'Download Artifact: Deployment Scripts' 
+    - name: 'Download Artifact: Deployment Scripts'
       uses: actions/download-artifact@v2
       with:
         name: 'deployment-scripts'
         path: ${{ github.workspace }}/deployment-scripts
-        
+
     # Login to Azure
     - name: Login via Az module
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         # set this if you will be using PowerShell
-        # enable-AzPSSession: true 
+        # enable-AzPSSession: true
 
     # Deploy Databricks Workspace
     - name: Deploy ARM Template (Databricks)
@@ -203,8 +203,8 @@ jobs:
       # if: ${{ github.event.inputs.MODE == 'SKIP FOR TESTING' }}
       with:
         inlineScript: |
-          az group create --location 'EastUS2' --name 'Databricks-MyProject-MG-Dev'
-          az deployment group create --resource-group 'Databricks-MyProject-MG-Dev' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='Databricks-MyProject-MG-Dev'
+          az group create --location 'EastUS2' --name 'MLOPS_DBK_XBB-Dev'
+          az deployment group create --resource-group 'MLOPS_DBK_XBB-Dev' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='MLOPS_DBK_XBB-Dev'
     # Deploy Azure KeyVault
     - name: Deploy ARM Template (KeyVault)
       uses: azure/CLI@v1
@@ -261,8 +261,8 @@ jobs:
     environment:
         name: Staging
     env:
-      resourceGroupName: 'Databricks-MyProject-MG-QA'
-      databricksWorkspaceName: 'Databricks-MyProject-MG-QA'
+      resourceGroupName: 'MLOPS_DBK_XBB-QA'
+      databricksWorkspaceName: 'MLOPS_DBK_XBB-QA'
       keyVaultName: 'KeyVault-MyProject7-QA'
       NotebookDeploymentPath: '/MyProject'
       GitNotebookPath: 'notebooks/MyProject'
@@ -274,57 +274,57 @@ jobs:
       with:
         inlineScript: |
           dir env:
-        azPSVersion: '3.1.0'        
+        azPSVersion: '3.1.0'
 
     # Download Artifact: ARM-Templates
-    - name: 'Download Artifact: ARM-Templates' 
+    - name: 'Download Artifact: ARM-Templates'
       uses: actions/download-artifact@v2
       with:
         name: 'ARM-Templates'
         path: ${{ github.workspace }}/ARM-Templates
 
     # Download Artifact: Databricks-Clusters
-    - name: 'Download Artifact: Databricks-Clusters' 
+    - name: 'Download Artifact: Databricks-Clusters'
       uses: actions/download-artifact@v2
       with:
         name: 'clusters'
         path: ${{ github.workspace }}/clusters
 
     # Download Artifact: Databricks-Notebooks
-    - name: 'Download Artifact: Databricks-Notebooks' 
+    - name: 'Download Artifact: Databricks-Notebooks'
       uses: actions/download-artifact@v2
       with:
         name: 'notebooks'
         path: ${{ github.workspace }}/notebooks
 
     # Download Artifact: Databricks-Jobs
-    - name: 'Download Artifact: Databricks-Jobs' 
+    - name: 'Download Artifact: Databricks-Jobs'
       uses: actions/download-artifact@v2
       with:
         name: 'jobs'
         path: ${{ github.workspace }}/jobs
 
     # Download Artifact: Databricks-Init-Scripts
-    - name: 'Download Artifact: Databricks-Init-Scripts' 
+    - name: 'Download Artifact: Databricks-Init-Scripts'
       uses: actions/download-artifact@v2
       with:
         name: 'init-scripts'
         path: ${{ github.workspace }}/init-scripts
 
     # Download Artifact: Deployment Scripts
-    - name: 'Download Artifact: Deployment Scripts' 
+    - name: 'Download Artifact: Deployment Scripts'
       uses: actions/download-artifact@v2
       with:
         name: 'deployment-scripts'
         path: ${{ github.workspace }}/deployment-scripts
-        
+
     # Login to Azure
     - name: Login via Az module
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         # set this if you will be using PowerShell
-        # enable-AzPSSession: true 
+        # enable-AzPSSession: true
 
     # Deploy Databricks Workspace
     - name: Deploy ARM Template (Databricks)
@@ -332,8 +332,8 @@ jobs:
       # if: ${{ github.event.inputs.MODE == 'SKIP FOR TESTING' }}
       with:
         inlineScript: |
-          az group create --location 'EastUS2' --name 'Databricks-MyProject-MG-QA'
-          az deployment group create --resource-group 'Databricks-MyProject-MG-QA' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='Databricks-MyProject-MG-QA'
+          az group create --location 'EastUS2' --name 'MLOPS_DBK_XBB-QA'
+          az deployment group create --resource-group 'MLOPS_DBK_XBB-QA' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='MLOPS_DBK_XBB-QA'
     # Deploy Azure KeyVault
     - name: Deploy ARM Template (KeyVault)
       uses: azure/CLI@v1
@@ -390,8 +390,8 @@ jobs:
     environment:
         name: Prod
     env:
-      resourceGroupName: 'Databricks-MyProject-MG-Prod'
-      databricksWorkspaceName: 'Databricks-MyProject-MG-Prod'
+      resourceGroupName: 'MLOPS_DBK_XBB-Prod'
+      databricksWorkspaceName: 'MLOPS_DBK_XBB-Prod'
       keyVaultName: 'KeyVault-MyProject7-Prod'
       NotebookDeploymentPath: '/MyProject'
       GitNotebookPath: 'notebooks/MyProject'
@@ -403,57 +403,57 @@ jobs:
       with:
         inlineScript: |
           dir env:
-        azPSVersion: '3.1.0'        
+        azPSVersion: '3.1.0'
 
     # Download Artifact: ARM-Templates
-    - name: 'Download Artifact: ARM-Templates' 
+    - name: 'Download Artifact: ARM-Templates'
       uses: actions/download-artifact@v2
       with:
         name: 'ARM-Templates'
         path: ${{ github.workspace }}/ARM-Templates
 
     # Download Artifact: Databricks-Clusters
-    - name: 'Download Artifact: Databricks-Clusters' 
+    - name: 'Download Artifact: Databricks-Clusters'
       uses: actions/download-artifact@v2
       with:
         name: 'clusters'
         path: ${{ github.workspace }}/clusters
 
     # Download Artifact: Databricks-Notebooks
-    - name: 'Download Artifact: Databricks-Notebooks' 
+    - name: 'Download Artifact: Databricks-Notebooks'
       uses: actions/download-artifact@v2
       with:
         name: 'notebooks'
         path: ${{ github.workspace }}/notebooks
 
     # Download Artifact: Databricks-Jobs
-    - name: 'Download Artifact: Databricks-Jobs' 
+    - name: 'Download Artifact: Databricks-Jobs'
       uses: actions/download-artifact@v2
       with:
         name: 'jobs'
         path: ${{ github.workspace }}/jobs
 
     # Download Artifact: Databricks-Init-Scripts
-    - name: 'Download Artifact: Databricks-Init-Scripts' 
+    - name: 'Download Artifact: Databricks-Init-Scripts'
       uses: actions/download-artifact@v2
       with:
         name: 'init-scripts'
         path: ${{ github.workspace }}/init-scripts
 
     # Download Artifact: Deployment Scripts
-    - name: 'Download Artifact: Deployment Scripts' 
+    - name: 'Download Artifact: Deployment Scripts'
       uses: actions/download-artifact@v2
       with:
         name: 'deployment-scripts'
         path: ${{ github.workspace }}/deployment-scripts
-        
+
     # Login to Azure
     - name: Login via Az module
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         # set this if you will be using PowerShell
-        # enable-AzPSSession: true 
+        # enable-AzPSSession: true
 
     # Deploy Databricks Workspace
     - name: Deploy ARM Template (Databricks)
@@ -461,8 +461,8 @@ jobs:
       # if: ${{ github.event.inputs.MODE == 'SKIP FOR TESTING' }}
       with:
         inlineScript: |
-          az group create --location 'EastUS2' --name 'Databricks-MyProject-MG-Prod'
-          az deployment group create --resource-group 'Databricks-MyProject-MG-Prod' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='Databricks-MyProject-MG-Prod'
+          az group create --location 'EastUS2' --name 'MLOPS_DBK_XBB-Prod'
+          az deployment group create --resource-group 'MLOPS_DBK_XBB-Prod' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='MLOPS_DBK_XBB-Prod'
     # Deploy Azure KeyVault
     - name: Deploy ARM Template (KeyVault)
       uses: azure/CLI@v1
