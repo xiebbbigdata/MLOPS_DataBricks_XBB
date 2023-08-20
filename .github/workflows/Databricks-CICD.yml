@@ -133,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       resourceGroupName: 'MLOPS_DataBricks_XBB-Dev'
-      databricksWorkspaceName: 'MLOPS_DataBricks_XBB-Dev'
+      databricksWorkspaceName: 'MLOPS_DBK_XBB-Dev'
       keyVaultName: 'KeyVault-DBK-XBB-Dev'
       NotebookDeploymentPath: '/MyProject'
       GitNotebookPath: 'notebooks/MyProject'
@@ -262,7 +262,7 @@ jobs:
         name: Staging
     env:
       resourceGroupName: 'MLOPS_DataBricks_XBB-QA'
-      databricksWorkspaceName: 'MLOPS_DataBricks_XBB-QA'
+      databricksWorkspaceName: 'MLOPS_DBK_XBB-QA'
       keyVaultName: 'KeyVault-DBK-XBB-QA'
       NotebookDeploymentPath: '/MyProject'
       GitNotebookPath: 'notebooks/MyProject'
@@ -391,7 +391,7 @@ jobs:
         name: Prod
     env:
       resourceGroupName: 'MLOPS_DataBricks_XBB-Prod'
-      databricksWorkspaceName: 'MLOPS_DataBricks_XBB-Prod'
+      databricksWorkspaceName: 'MLOPS_DBK_XBB-Prod'
       keyVaultName: 'KeyVault-DBK-XBB-Prod'
       NotebookDeploymentPath: '/MyProject'
       GitNotebookPath: 'notebooks/MyProject'
