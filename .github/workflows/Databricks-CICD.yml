@@ -45,13 +45,13 @@ on:
       KEY_VAULT_NAME:
         description: 'KeyVault name'
         required: true
-        default: 'KeyVault-MyProject7'
+        default: 'MLOPS_DBK_XBB'
 
       # This is a KeyVault for holding the Service Principal to make Databricks API calls and to hold Databricks KeyVault backed Secrets
       SUBSCRIPTION_ID:
         description: 'Azure Subscription Id'
         required: true
-        default: ''
+        default: 'a98e8d0a-4b26-4e05-b4fe-4fa28944338c'
 
       # Inialize the system
       # Note: We only want to run the KeyVault ARM template once.  If you keep re-running, then you will OVERWRITE your values
@@ -134,7 +134,7 @@ jobs:
     env:
       resourceGroupName: 'MLOPS_DBK_XBB-Dev'
       databricksWorkspaceName: 'MLOPS_DBK_XBB-Dev'
-      keyVaultName: 'KeyVault-MyProject7-Dev'
+      keyVaultName: 'MLOPS_DBK_XBB-Dev'
       NotebookDeploymentPath: '/MyProject'
       GitNotebookPath: 'notebooks/MyProject'
 
@@ -220,7 +220,7 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       #if: ${{ github.event.inputs.MODE == 'Databricks' }}
       with:
-        keyvault: 'KeyVault-MyProject7-Dev'
+        keyvault: 'MLOPS_DBK_XBB-Dev'
         secrets: 'databricks-dev-ops-subscription-id,databricks-dev-ops-tenant-id,databricks-dev-ops-client-id,databricks-dev-ops-client-secret'
       id: databricksSecretAction
 
@@ -263,7 +263,7 @@ jobs:
     env:
       resourceGroupName: 'MLOPS_DBK_XBB-QA'
       databricksWorkspaceName: 'MLOPS_DBK_XBB-QA'
-      keyVaultName: 'KeyVault-MyProject7-QA'
+      keyVaultName: 'MLOPS_DBK_XBB-QA'
       NotebookDeploymentPath: '/MyProject'
       GitNotebookPath: 'notebooks/MyProject'
 
@@ -392,7 +392,7 @@ jobs:
     env:
       resourceGroupName: 'MLOPS_DBK_XBB-Prod'
       databricksWorkspaceName: 'MLOPS_DBK_XBB-Prod'
-      keyVaultName: 'KeyVault-MyProject7-Prod'
+      keyVaultName: 'MLOPS_DBK_XBB-Prod'
       NotebookDeploymentPath: '/MyProject'
       GitNotebookPath: 'notebooks/MyProject'
 
