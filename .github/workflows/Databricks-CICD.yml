@@ -261,7 +261,7 @@ jobs:
     environment:
         name: Staging
     env:
-      resourceGroupName: 'MLOPS_DBK_XBB-QA
+      resourceGroupName: 'MLOPS_DBK_XBB-QA'
       databricksWorkspaceName: 'MLOPS_DBK_XBB-QA'
       keyVaultName: 'KeyVault-DBK-XBB-QA'
       NotebookDeploymentPath: '/MyProject'
