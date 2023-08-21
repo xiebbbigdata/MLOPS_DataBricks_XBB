@@ -332,8 +332,8 @@ jobs:
       # if: ${{ github.event.inputs.MODE == 'SKIP FOR TESTING' }}
       with:
         inlineScript: |
-          az group create --location 'EastUS2' --name 'MLOPS_DataBricks_XBB-QA'
-          az deployment group create --resource-group 'MLOPS_DataBricks_XBB-QA' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='MLOPS_DataBricks_XBB-QA'
+          az group create --location 'EastUS2' --name 'MLOPS_DBK_XBB-QA'
+          az deployment group create --resource-group 'MLOPS_DBK_XBB-QA' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='MLOPS_DBK_XBB-QA'
     # Deploy Azure KeyVault
     - name: Deploy ARM Template (KeyVault)
       uses: azure/CLI@v1
@@ -461,8 +461,8 @@ jobs:
       # if: ${{ github.event.inputs.MODE == 'SKIP FOR TESTING' }}
       with:
         inlineScript: |
-          az group create --location 'EastUS2' --name 'MLOPS_DataBricks_XBB-Prod'
-          az deployment group create --resource-group 'MLOPS_DataBricks_XBB-Prod' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='MLOPS_DataBricks_XBB-Prod'
+          az group create --location 'EastUS2' --name 'MLOPS_DBK_XBB-Prod'
+          az deployment group create --resource-group 'MLOPS_DBK_XBB-Prod' --template-file $GITHUB_WORKSPACE/ARM-Templates/azuredeploy.databricks.json --parameters @$GITHUB_WORKSPACE/ARM-Templates/parameters.databricks.json --parameters workspaceName='MLOPS_DBK_XBB-Prod'
     # Deploy Azure KeyVault
     - name: Deploy ARM Template (KeyVault)
       uses: azure/CLI@v1
